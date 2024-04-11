@@ -1,7 +1,7 @@
 const samples = [
     { name: "Emily", voice_id: "372", text: "Hello, my name is Emily", output: "372.wav" },
-    { name: "Alice", voice_id: "0", text: "Hello, my name is Alice", output: "0.wav" },
-    { name: "Judith", voice_id: "1", text: "Hello, my name is Judith", output: "1.wav" },
+    { name: "Alice", voice_id: "149", text: "Hello, my name is Alice", output: "149.wav" },
+    { name: "Judith", voice_id: "140", text: "Hello, my name is Judith", output: "140.wav" },
     { name: "Julie", voice_id: "115", text: "Hello, my name is Julie", output: "115.wav" },
     { name: "Manon", voice_id: "450", text: "Hello, my name is Manon", output: "450.wav" },
     { name: "Lucy", voice_id: "545", text: "Hello, my name is Lucy", output: "545.wav" },
@@ -9,8 +9,8 @@ const samples = [
     { name: "John", voice_id: "583", text: "Hello, my name is John", output: "583.wav" },
     { name: "Richard", voice_id: "572", text: "Hello, my name is Richard", output: "572.wav" },
     { name: "Peter", voice_id: "541", text: "Hello, my name is Peter", output: "541.wav" },
-    { name: "Kevin", voice_id: "2", text: "Hello, my name is Kevin", output: "2.wav" },
-    { name: "Micka", voice_id: "3", text: "Hello, my name is Micka", output: "3.wav" },
+    { name: "Kevin", voice_id: "135", text: "Hello, my name is Kevin", output: "135.wav" },
+    { name: "Micka", voice_id: "136", text: "Hello, my name is Micka", output: "136.wav" },
 ];
 
 async function init() {
@@ -134,7 +134,7 @@ async function init() {
         samples.forEach(sample => {
             const outputFile = path.join(samplesDir, sample.output);
             if (!fs.existsSync(outputFile)) {
-                const cmd = getPiperCommand(sample.text, sample.voice_id, outputFile);
+                const cmd = getPiperCommand(sample.text, sample.voice_id.toString(), outputFile);
                 exec(cmd, (error, stdout, stderr) => {
                     if (error) {
                         console.error(`exec error: ${error}`);
@@ -151,7 +151,8 @@ async function init() {
         //remove from text ' and " and \ and / and ` and ; 
         text = text.replace(/['"\\\/`;]/g, '');
         console.log(`Generating audio for: ${text}`)
-        const voice = parseInt(req.body.voice, 1000) || 115;
+        const voice = parseInt(req.body.voice) || 115;
+        
         const outputFile = path.join(OUTPUT_DIR, `output-${uuidv4()}.wav`);
         let cmd = getPiperCommand(text, voice, outputFile);
 
