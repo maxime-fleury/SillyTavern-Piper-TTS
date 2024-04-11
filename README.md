@@ -15,4 +15,4 @@ Clean code.
 Rework voices to something like voices.json
 
 # I have another project using piper tts
-It creates all voices samples from a multi speaker model, it opens a web browser and can listen to them, probablly I'll soon post it on github so you can choose the voices you want, for any model
+It creates all voices samples from a multi speaker model, it opens a web browser and then you can listen to them one by one, probablly I'll soon post it on github so you can choose the voices you want, for any model
