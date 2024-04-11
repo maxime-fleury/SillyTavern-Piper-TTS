@@ -1,3 +1,18 @@
+const samples = [
+    { name: "Emily", voice_id: "372", text: "Hello, my name is Emily", output: "372.wav" },
+    { name: "Alice", voice_id: "0", text: "Hello, my name is Alice", output: "0.wav" },
+    { name: "Judith", voice_id: "1", text: "Hello, my name is Judith", output: "1.wav" },
+    { name: "Julie", voice_id: "115", text: "Hello, my name is Julie", output: "115.wav" },
+    { name: "Manon", voice_id: "450", text: "Hello, my name is Manon", output: "450.wav" },
+    { name: "Lucy", voice_id: "545", text: "Hello, my name is Lucy", output: "545.wav" },
+    { name: "Marie", voice_id: "11", text: "Hello, my name is Marie", output: "11.wav"},
+    { name: "John", voice_id: "583", text: "Hello, my name is John", output: "583.wav" },
+    { name: "Richard", voice_id: "572", text: "Hello, my name is Richard", output: "572.wav" },
+    { name: "Peter", voice_id: "541", text: "Hello, my name is Peter", output: "541.wav" },
+    { name: "Kevin", voice_id: "2", text: "Hello, my name is Kevin", output: "2.wav" },
+    { name: "Micka", voice_id: "3", text: "Hello, my name is Micka", output: "3.wav" },
+];
+
 async function init() {
     const express = require('express');
     const cors = require('cors');
@@ -98,16 +113,11 @@ async function init() {
 
     app.get('/tts/speakers', (req, res) => {
         const baseURL = `${req.protocol}://${req.get('host')}`;
-        const voices = [
-            { name: "Emily", voice_id: "372", preview_url: `${baseURL}/samples/372.wav` },
-            { name: "Julie", voice_id: "115", preview_url: `${baseURL}/samples/115.wav` },
-            { name: "Manon", voice_id: "450", preview_url: `${baseURL}/samples/450.wav` },
-            { name: "Lucy", voice_id: "545", preview_url: `${baseURL}/samples/545.wav` },
-            { name: "John", voice_id: "583", preview_url: `${baseURL}/samples/583.wav` },
-            { name: "Richard", voice_id: "572", preview_url: `${baseURL}/samples/572.wav` },
-            { name: "Peter", voice_id: "541", preview_url: `${baseURL}/samples/541.wav`}
 
-        ];
+        let voices = [];
+        samples.forEach(sample => {
+            voices.push({ name: sample.name, voice_id: sample.voice_id, preview_url: `${baseURL}/samples/${sample.output}` });
+        });
         console.log("/tts/speakers", JSON.stringify(voices));
         res.json(voices);
     });
@@ -120,15 +130,7 @@ async function init() {
         if (!fs.existsSync(samplesDir)) {
             fs.mkdirSync(samplesDir);
         }
-        const samples = [
-            { name: "Emily", voice_id: "372", text: "Hello, my name is Emily", output: "372.wav" },
-            { name: "Julie", voice_id: "115", text: "Hello, my name is Julie", output: "115.wav" },
-            { name: "Manon", voice_id: "450", text: "Hello, my name is Manon", output: "450.wav" },
-            { name: "Lucy", voice_id: "545", text: "Hello, my name is Lucy", output: "545.wav" },
-            { name: "John", voice_id: "581", text: "Hello, my name is John", output: "581.wav" },
-            { name: "Richard", voice_id: "572", text: "Hello, my name is Richard", output: "572.wav" },
-            { name: "Peter", voice_id: "541", text: "Hello, my name is Peter", output: "541.wav"}
-        ];
+
         samples.forEach(sample => {
             const outputFile = path.join(samplesDir, sample.output);
             if (!fs.existsSync(outputFile)) {
