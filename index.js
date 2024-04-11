@@ -103,7 +103,7 @@ async function init() {
             { name: "Julie", voice_id: "115", preview_url: `${baseURL}/samples/115.wav` },
             { name: "Manon", voice_id: "450", preview_url: `${baseURL}/samples/450.wav` },
             { name: "Lucy", voice_id: "545", preview_url: `${baseURL}/samples/545.wav` },
-            { name: "John", voice_id: "581", preview_url: `${baseURL}/samples/581.wav` },
+            { name: "John", voice_id: "583", preview_url: `${baseURL}/samples/583.wav` },
             { name: "Richard", voice_id: "572", preview_url: `${baseURL}/samples/572.wav` },
             { name: "Peter", voice_id: "541", preview_url: `${baseURL}/samples/541.wav`}
 
