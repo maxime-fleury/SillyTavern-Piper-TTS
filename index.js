@@ -99,10 +99,13 @@ async function init() {
     app.get('/tts/speakers', (req, res) => {
         const baseURL = `${req.protocol}://${req.get('host')}`;
         const voices = [
-            { name: "Voice 372", voice_id: "372", preview_url: `${baseURL}/samples/372.wav` },
-            { name: "Voice 115", voice_id: "115", preview_url: `${baseURL}/samples/115.wav` },
-            { name: "Voice 450", voice_id: "450", preview_url: `${baseURL}/samples/450.wav` },
-            { name: "Voice 545", voice_id: "545", preview_url: `${baseURL}/samples/545.wav` }
+            { name: "Emily", voice_id: "372", preview_url: `${baseURL}/samples/372.wav` },
+            { name: "Julie", voice_id: "115", preview_url: `${baseURL}/samples/115.wav` },
+            { name: "Manon", voice_id: "450", preview_url: `${baseURL}/samples/450.wav` },
+            { name: "Lucy", voice_id: "545", preview_url: `${baseURL}/samples/545.wav` },
+            { name: "John", voice_id: "581", preview_url: `${baseURL}/samples/581.wav` },
+            { name: "Richard", voice_id: "572", preview_url: `${baseURL}/samples/572.wav` },
+
         ];
         console.log("/tts/speakers", JSON.stringify(voices));
         res.json(voices);
@@ -117,10 +120,13 @@ async function init() {
             fs.mkdirSync(samplesDir);
         }
         const samples = [
-            { name: "Voice 372", voice_id: "372", text: "Hello, my name is Voice 372", output: "372.wav" },
-            { name: "Voice 115", voice_id: "115", text: "Hello, my name is Voice 115", output: "115.wav" },
-            { name: "Voice 450", voice_id: "450", text: "Hello, my name is Voice 450", output: "450.wav" },
-            { name: "Voice 545", voice_id: "545", text: "Hello, my name is Voice 545", output: "545.wav" }
+            { name: "Emily", voice_id: "372", text: "Hello, my name is Emily", output: "372.wav" },
+            { name: "Julie", voice_id: "115", text: "Hello, my name is Julie", output: "115.wav" },
+            { name: "Manon", voice_id: "450", text: "Hello, my name is Manon", output: "450.wav" },
+            { name: "Lucy", voice_id: "545", text: "Hello, my name is Lucy", output: "545.wav" },
+            { name: "John", voice_id: "581", text: "Hello, my name is John", output: "581.wav" },
+            { name: "Richard", voice_id: "572", text: "Hello, my name is Richard", output: "572.wav" },
+            { name: "Peter", voice_id: "541", text: "Hello, my name is Peter", output: "541.wav"}
         ];
         samples.forEach(sample => {
             const outputFile = path.join(samplesDir, sample.output);
