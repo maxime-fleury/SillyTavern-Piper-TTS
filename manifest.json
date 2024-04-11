@@ -1,0 +1,11 @@
+{
+    "display_name": "SillyTavern Piper TTS",
+    "loading_order": 9,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Makusu",
+    "version": "1.0.0",
+    "homePage": "https://github.com/maxime-fleury/SillyTavern-Piper-TTS"
+}
