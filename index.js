@@ -105,6 +105,7 @@ async function init() {
             { name: "Lucy", voice_id: "545", preview_url: `${baseURL}/samples/545.wav` },
             { name: "John", voice_id: "581", preview_url: `${baseURL}/samples/581.wav` },
             { name: "Richard", voice_id: "572", preview_url: `${baseURL}/samples/572.wav` },
+            { name: "Peter", voice_id: "541", preview_url: `${baseURL}/samples/541.wav`}
 
         ];
         console.log("/tts/speakers", JSON.stringify(voices));
