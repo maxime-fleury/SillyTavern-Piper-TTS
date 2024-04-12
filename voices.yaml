@@ -1,36 +1,46 @@
-- name: Emily
-  voice_id: "372"
-  text: "Hello, my name is Emily"
-- name: Alice
-  voice_id: "149"
-  text: "Hello, my name is Alice"
-- name: Judith
-  voice_id: "140"
-  text: "Hello, my name is Judith"
-- name: Julie
-  voice_id: "115"
-  text: "Hello, my name is Julie"
-- name: Manon
-  voice_id: "450"
-  text: "Hello, my name is Manon"
-- name: Lucy
-  voice_id: "545"
-  text: "Hello, my name is Lucy"
-- name: Marie
-  voice_id: "11"
-  text: "Hello, my name is Marie"
-- name: John
-  voice_id: "583"
-  text: "Hello, my name is John"
-- name: Richard
-  voice_id: "572"
-  text: "Hello, my name is Richard"
-- name: Peter
-  voice_id: "541"
-  text: "Hello, my name is Peter"
-- name: Kevin
-  voice_id: "135"
-  text: "Hello, my name is Kevin"
-- name: Micka
-  voice_id: "136"
-  text: "Hello, my name is Micka"
+- language: en
+  voices:
+    - name: Emily
+      voice_id: "372"
+      text: "Hello, my name is Emily"
+    - name: Alice
+      voice_id: "149"
+      text: "Hello, my name is Alice"
+    - name: Judith
+      voice_id: "140"
+      text: "Hello, my name is Judith"
+    - name: Julie
+      voice_id: "115"
+      text: "Hello, my name is Julie"
+    - name: Manon
+      voice_id: "450"
+      text: "Hello, my name is Manon"
+    - name: Lucy
+      voice_id: "545"
+      text: "Hello, my name is Lucy"
+    - name: Marie
+      voice_id: "11"
+      text: "Hello, my name is Marie"
+    - name: John
+      voice_id: "583"
+      text: "Hello, my name is John"
+    - name: Richard
+      voice_id: "572"
+      text: "Hello, my name is Richard"
+    - name: Peter
+      voice_id: "541"
+      text: "Hello, my name is Peter"
+    - name: Kevin
+      voice_id: "135"
+      text: "Hello, my name is Kevin"
+    - name: Micka
+      voice_id: "136"
+      text: "Hello, my name is Micka"
+- language: fr
+  voices:
+    - name: Jessica
+      voice_id: "0"
+      text: "Salut ! Je m'appelle Jessica"
+    - name: Tom
+      voice_id: "1"
+      text: "Salut ! Je m'appelle Tom"

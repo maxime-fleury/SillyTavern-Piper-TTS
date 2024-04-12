@@ -12,6 +12,15 @@ const yaml = require('js-yaml');
 
 const app = express();
 const PORT = 8001;
+//LANGUAGE SUPPORT NEED TO REFACTOR THIS LATER
+let LANG = 'en';
+let MODELS = [];
+    MODELS['en'] = path.join(__dirname, 'models', 'en_US-libritts_r-medium.onnx');
+    MODELS['fr'] = path.join(__dirname, 'models', 'fr_FR-upmc-medium.onnx');
+
+let defaultVoices = [];
+    defaultVoices['en'] = 115;
+    defaultVoices['fr'] = 0;
 
 function loadVoiceSamples() {
     try {
@@ -33,7 +42,6 @@ async function init() {
     app.use(bodyParser.json());
 
     // This assumes you have a 'models' directory relative to where the server is run
-    const MODEL_PATH = path.join(__dirname, 'models', 'en_US-libritts_r-medium.onnx');
     const OUTPUT_DIR = path.join(__dirname, 'out');
 
     // Check the OS and adjust the Piper command
@@ -52,7 +60,7 @@ async function init() {
             piperExecutable ='piper'; // Use shell script for MacOS
         }
     
-        return `${echoCommand} '${text}' | ${piperExecutable} -m ${MODEL_PATH} -s ${voiceId} -f ${outputFile}`;
+        return `${echoCommand} '${text}' | ${piperExecutable} -m ${MODELS[LANG]} -s ${voiceId} -f ${outputFile}`;
     }
     if (!fs.existsSync(OUTPUT_DIR)){
         fs.mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -60,7 +68,7 @@ async function init() {
 
     class TtsService {
         constructor() {
-            this.langs = { 'en': 'English', 'de': 'German' };  // Example languages
+            this.langs = { 'en': 'English', 'de': 'German', 'es': 'Spanish', 'fr': 'French', 'it': 'Italian' };
             this.sessionPath = '';
         }
 
@@ -74,7 +82,7 @@ async function init() {
         }
 
         loadModel(langId) {
-            // Code to load and set the model for the given language ID
+            LANG = langId;
         }
     }
 
@@ -112,37 +120,54 @@ async function init() {
 
     app.get('/tts/speakers', (req, res) => {
         const baseURL = `${req.protocol}://${req.get('host')}`;
-
-        let voices = [];
-        samples.forEach(sample => {
-            voices.push({ name: sample.name, voice_id: sample.voice_id, preview_url: `${baseURL}/samples/${sample.voice_id + ".wav"}` });
-        });
+        // Find the language group in the samples array
+        const languageGroup = samples.find(group => group.language === LANG);
+    
+        if (!languageGroup) {
+            console.log(`No language group found for language: ${LANG}`);
+            return res.status(404).send('Language not supported.');
+        }
+    
+        // Extract the voices for the current language and generate their preview URLs
+        const voices = languageGroup.voices.map(voice => ({
+            name: voice.name,
+            voice_id: voice.voice_id,
+            preview_url: `${baseURL}/samples/${LANG}/${voice.voice_id}.wav`
+        }));
+    
         console.log("/tts/speakers", JSON.stringify(voices));
         res.json(voices);
     });
+    
     app.use('/samples', express.static(__dirname + `/samples/`));
     // Setup static directory and generate samples if they don't exist
     checkAndGenerateSamples();
 
     function checkAndGenerateSamples() {
-        const samplesDir = path.join(__dirname, 'samples');
-        if (!fs.existsSync(samplesDir)) {
-            fs.mkdirSync(samplesDir);
-        }
-
-        samples.forEach(sample => {
-            const outputFile = path.join(samplesDir, sample.voice_id + '.wav');
-            if (!fs.existsSync(outputFile)) {
-                const cmd = getPiperCommand(sample.text, sample.voice_id.toString(), outputFile);
-                exec(cmd, (error, stdout, stderr) => {
-                    if (error) {
-                        console.error(`exec error: ${error}`);
-                    }
-                });
-                console.log(`Generated sample: ${outputFile}`);
+        const defaultLang = LANG;
+        samples.forEach(languageGroup => {
+            const languageDir = path.join(__dirname, 'samples', languageGroup.language);
+            if (!fs.existsSync(languageDir)) {
+                fs.mkdirSync(languageDir, { recursive: true });
             }
-            console.log(`Sample exists: ${outputFile}`);
+           ttsService.loadModel(languageGroup.language);
+            languageGroup.voices.forEach(voice => {
+                const outputFile = path.join(languageDir, `${voice.voice_id}.wav`);
+                if (!fs.existsSync(outputFile)) {
+                    const cmd = getPiperCommand(voice.text, voice.voice_id, outputFile);
+                    exec(cmd, (error, stdout, stderr) => {
+                        if (error) {
+                            console.error(`exec error: ${error}`);
+                            return;
+                        }
+                        console.log(`Generated sample: ${outputFile}`);
+                    });
+                } else {
+                    console.log(`Sample exists: ${outputFile}`);
+                }
+            });
         });
+        ttsService.loadModel(defaultLang);//reload default language
     }
 
     app.post('/tts/generate', upload.none(), (req, res) => {
@@ -150,7 +175,7 @@ async function init() {
         //remove from text ' and " and \ and / and ` and ; 
         text = text.replace(/['"\\\/`;]/g, '');
         console.log(`Generating audio for: ${text}`)
-        const voice = parseInt(req.body.voice) || 115;
+        const voice = parseInt(req.body.voice) || defaultVoices[LANG];
         
         const outputFile = path.join(OUTPUT_DIR, `output-${uuidv4()}.wav`);
         let cmd = getPiperCommand(text, voice, outputFile);
