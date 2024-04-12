@@ -1,33 +1,32 @@
-const samples = [
-    { name: "Emily", voice_id: "372", text: "Hello, my name is Emily", output: "372.wav" },
-    { name: "Alice", voice_id: "149", text: "Hello, my name is Alice", output: "149.wav" },
-    { name: "Judith", voice_id: "140", text: "Hello, my name is Judith", output: "140.wav" },
-    { name: "Julie", voice_id: "115", text: "Hello, my name is Julie", output: "115.wav" },
-    { name: "Manon", voice_id: "450", text: "Hello, my name is Manon", output: "450.wav" },
-    { name: "Lucy", voice_id: "545", text: "Hello, my name is Lucy", output: "545.wav" },
-    { name: "Marie", voice_id: "11", text: "Hello, my name is Marie", output: "11.wav"},
-    { name: "John", voice_id: "583", text: "Hello, my name is John", output: "583.wav" },
-    { name: "Richard", voice_id: "572", text: "Hello, my name is Richard", output: "572.wav" },
-    { name: "Peter", voice_id: "541", text: "Hello, my name is Peter", output: "541.wav" },
-    { name: "Kevin", voice_id: "135", text: "Hello, my name is Kevin", output: "135.wav" },
-    { name: "Micka", voice_id: "136", text: "Hello, my name is Micka", output: "136.wav" },
-];
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { exec } = require('child_process');
+const { v4: uuidv4 } = require('uuid');
+const multer = require('multer');
+const upload = multer();
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const yaml = require('js-yaml');
+
+const app = express();
+const PORT = 8001;
+
+function loadVoiceSamples() {
+    try {
+        const fileContents = fs.readFileSync('./plugins/SillyTavern-Piper-TTS/voices.yaml', 'utf8');
+        const samples = yaml.load(fileContents);
+        return samples;
+    } catch (e) {
+        console.error("Error loading the YAML file:", e);
+        return []; // Return an empty array in case of an error
+    }
+}
+
+const samples = loadVoiceSamples();
 
 async function init() {
-    const express = require('express');
-    const cors = require('cors');
-    const bodyParser = require('body-parser');
-    const { exec } = require('child_process');
-    const { v4: uuidv4 } = require('uuid');
-    const multer = require('multer');
-    const upload = multer();
-    const fs = require('fs');
-    const path = require('path');
-    const os = require('os');
-
-
-    const app = express();
-    const PORT = 8001;
 
     // Middleware
     app.use(cors());
@@ -116,7 +115,7 @@ async function init() {
 
         let voices = [];
         samples.forEach(sample => {
-            voices.push({ name: sample.name, voice_id: sample.voice_id, preview_url: `${baseURL}/samples/${sample.output}` });
+            voices.push({ name: sample.name, voice_id: sample.voice_id, preview_url: `${baseURL}/samples/${sample.voice_id + ".wav"}` });
         });
         console.log("/tts/speakers", JSON.stringify(voices));
         res.json(voices);
@@ -132,7 +131,7 @@ async function init() {
         }
 
         samples.forEach(sample => {
-            const outputFile = path.join(samplesDir, sample.output);
+            const outputFile = path.join(samplesDir, sample.voice_id + '.wav');
             if (!fs.existsSync(outputFile)) {
                 const cmd = getPiperCommand(sample.text, sample.voice_id.toString(), outputFile);
                 exec(cmd, (error, stdout, stderr) => {
@@ -140,9 +139,9 @@ async function init() {
                         console.error(`exec error: ${error}`);
                     }
                 });
-                console.log(`Generated sample: ${sample.output}`);
+                console.log(`Generated sample: ${outputFile}`);
             }
-            console.log(`Sample exists: ${sample.output}`);
+            console.log(`Sample exists: ${outputFile}`);
         });
     }
 
