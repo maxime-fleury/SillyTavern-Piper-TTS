@@ -17,4 +17,6 @@ Clean code.
 It creates all voices samples from a multi speaker model, it opens a web browser and then you can listen to them one by one, probablly I'll soon post it on github so you can choose the voices you want, for any model
 
 If anyone has custom models that works with piper TTS, contact me thanks.
-The only thing I regret is that piper TTS doesn't many models.
+The only thing I regret is that piper TTS doesn't have many models.
+
+Feel free to tweak this, or contribute.
