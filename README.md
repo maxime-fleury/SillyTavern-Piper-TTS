@@ -9,7 +9,7 @@ Works only on windows for now and only English is available.
 
 Just go to tts select silero with default settings, choose voices.
 
-# If it doesn't work:
+# Github doesn't give enough free LFS, download the model from here and not github
 Check the model folder there should be this model: https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/libritts_r/medium/en_US-libritts_r-medium.onnx?download=true
 It should be around 70mb
 You don't need Extra or Silero server.
