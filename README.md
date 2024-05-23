@@ -7,6 +7,11 @@ Works only on windows for now and only English is available.
 4) run `npm install`
 4) run start.bat file from root folder of SillyTavern
 
+   /!\ make sure the name of the folder doesn't contain "main" word
+
+![image](https://github.com/maxime-fleury/SillyTavern-Piper-TTS/assets/81691077/2c9d74e2-6173-4128-bd12-633aa59d0abd)
+
+
 Just go to tts select silero with default settings, choose voices.
 
 # Github doesn't give enough free LFS, download the model from here and not github
