@@ -3,11 +3,11 @@
 Works only on windows for now and only English is available.
 1) Go to config.yaml
 2) Enable plugins `enableServerPlugins: true`
-3) Unzip SillyTavern-Piper-TTS in folder plugin
-4) run `npm install`
-4) run start.bat file from root folder of SillyTavern
+3) Unzip SillyTavern-Piper-TTS in directory plugin
+4) Go to SillyTavern-Piper-TTS directory and run `npm install`
+5) run start.bat file from root directory of SillyTavern
 
-   /!\ make sure the name of the folder doesn't contain "main" word
+   /!\ make sure the name of the directory doesn't contain "main" word
 
 ![image](https://github.com/maxime-fleury/SillyTavern-Piper-TTS/assets/81691077/2c9d74e2-6173-4128-bd12-633aa59d0abd)
 
